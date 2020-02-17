@@ -28,8 +28,16 @@
 
     rect { stroke-width: 3; }
 	
+	rect.databar:hover { fill: black; }
+	
 	.tick text { fill:"#fff"; }
 
+     text.data-label {
+		font-family: "ITC Franklin Gothic Demi";
+        font-size: 12px;
+		fill: #635f5d;
+    	text-anchor: middle;
+	 }
 
 	.toolTip 
 		{
