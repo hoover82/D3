@@ -108,6 +108,12 @@
 		   .attr ( "transform", `translate (0, ${innerHeight} )` )
 		   );
 
+      svg.append ( 'text')
+	            .attr("y", 100 )
+	            .attr("x", margin.left )
+	            .attr("class", 'title-band')
+	            .text ("Trick or Treaters by Half Hour");
+
 // Troubleshooting positioning, these will place Y-position at Y-positions  
 /* 
       svg.append ( 'text').attr("y",100).attr("class", 'Y').text ("100");
@@ -118,11 +124,7 @@
       svg.append ( 'text').attr("y",600).attr("class", 'Y').text ("600");
 */
 
-      svg.append ( 'text')
-	            .attr("y", 100 )
-	            .attr("x", margin.left )
-	            .attr("class", 'title-band')
-	            .text ("Trick or Treaters by Half Hour");
+//	  alert ( '>>> #1 Length of dataset is ' + dataset.length );
 	  
       var bar = g.selectAll ( "rect" )
 			.data ( dataset )
@@ -133,6 +135,7 @@
 			.attr ( "height", function(d) { return innerHeight - yScale(d); } )
 
     		.attr ( "width", barWidth  ) 
+    		.attr ( "class", "databar"  ) 
 
  			.attr ( "transform", function (d,i) {
 			    var translate = [ startingPoints[i], 0];
@@ -145,6 +148,35 @@
             .attr ( "time", function(d,i) { return majorLabels[   Math.floor (i/dimensions[1] ) ] } )
             .attr ( "kids", function(d,i) { return dataset[i] } )
 			;
+
+//	  alert ( '>>> #1 Length of dataset is ' + dataset.length );
+//	  alert ( 'dataset >>> ' + dataset );
+
+// for some reason, this was providing labels for only the second half of the dataset, so I coded it in a for-loop instead 
+//      var labels = g.selectAll ("text")
+//	       .data ( dataset )
+//		   .enter( )
+//		   .append( "text" )
+//		   .text ( function (d,i) { alert(d + " " + i); return i; } )
+//		   .attr ( "y", function(d) { return yScale(d); } )
+//           .attr ( "fill", "black" )
+//           .attr ("x", function(d,i) { return startingPoints[i];} )
+
+
+	  for ( i=0; i< dataset.length; i++ )
+	  {
+
+          g.append ( 'text')
+	            .attr("y", yScale( dataset[i] )-2 )
+	            .attr("x", startingPoints[i] + barWidth/2 )
+	            .attr("class", "data-label")
+	            .text (dataset[i])
+	  
+
+	  }			
+
+//	  alert ( '>>> #3 Length of dataset is ' + dataset.length );
+
 			
         } // end of render
 		
