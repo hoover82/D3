@@ -17,6 +17,15 @@ Next three are specific to the Halloween bar chart. Currently, the data are embe
 * trick-or-treaters.js
 * trick-or-treaters.css
 
+------------------------------------------------------------------
+
+Second visualization is example of four waffle charts.
+There is no CSS file for this one -- the color scheme is embedded into the javascript file
+* waffle.html
+* waffle.js
+
+Added 2020-03-08
+
 
 
 
