@@ -1,0 +1,37 @@
+
+
+
+<html>
+<head>
+
+	<script src="https://d3js.org/d3.v5.min.js"></script>
+	<script src="cruise_gantt.js"></script>
+	
+	<link rel = "stylesheet" type = "text/css" href = "cruise_gantt.css" />
+
+</head>
+
+
+<body onload="render ( )">
+
+    <div style="margin-left: 150px; margin-top: 2px;">
+        Color Slider
+        <input id="slidervalue" type="text" value="1"/>
+		
+        <span class="leftlabel">1</span>
+        <input id ="range1" type="range" min="1" max="4" value="1" style="width: 400px; margin-right: 10px;"/>
+        <span class="rightlabel">4</span>
+    </div>
+
+   <svg class="gantt-chart"></svg>
+  
+   <form action="#" id="dateSelector" onsubmit="javascript:submitClicked('a','b');">
+      <input id="mindate" type="text" value="2021-01-05"></input>
+      <input id="maxdate" type="text" value="2021-02-05"></input>
+<!--   input type="submit" onclick="alert ('Clicked');"></input -->
+	  <input type="submit" ></input>
+   </form>
+
+</body>
+
+</html>
