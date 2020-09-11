@@ -1,0 +1,163 @@
+<head>
+
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+
+  <script language ="javascript">
+  
+
+    function render()
+	{
+
+    dataset = [
+	       ["May 2019", 555,  53.45 ] 
+        ,  ["Jun 2019", 525,  60.68 ]
+	    ,  ["Jul 2019", 642,  72.58 ]
+	    ,  ["Aug 2019", 1645, 83.83 ]
+	    ,  ["Sep 2019", 1477, 79.13 ]
+	    ,  ["Oct 2019", 582,  60.05 ]
+	    ,  ["Nov 2019", 594,  44.24 ]
+	    ,  ["Dec 2019", 689,  39.59 ]
+	    ,  ["Jan 2020", 700,  34.39 ]
+	    ,  ["Feb 2020", 666,  34.53 ]
+	    ,  ["Mar 2020", 563,  39.98 ]
+	    ,  ["Apr 2020", 561,  47.43 ]
+	    ,  ["May 2020", 535,  55.69 ]
+	    ,  ["Jun 2020", 862,  67.28 ]
+        ]  	
+
+   ht = 400;
+   wt = 900;
+   
+   lm = 100;
+   rm = 100;
+   tm = 50;
+   bm = 50;
+   
+   barwidth = 30;
+   
+   
+   //  from https://medium.com/@stphaniekrus/tube-map-make-your-own-81f67dc77d0b
+    tubemapColors = 	
+	   [ "#000000"
+	   , "#0616b4"
+	   , "#0198d4"
+	   , "#980059"
+	   , "#e22219"
+	   , "#f7aaba"
+	   , "#fdf01b"
+	   , "#037b35"
+	   , "#ad6300"
+	   , "#a3a2a5" ]
+      colorChoices = [ "#0198d4", "#037b35" ]
+
+
+
+  monthsList = []
+  for ( i=0; i< dataset.length; i++ )
+  { 
+   monthsList.push (  dataset[i][0]   ); 
+  }
+
+  var yScaleL = d3.scaleLinear()
+        .domain ( [  0, 1800 ] )
+        .range  ( [ ht-bm , tm ] );
+
+  var yScaleR = d3.scaleLinear()
+        .domain ( [  0, 100 ] )
+        .range  ( [ ht-bm , tm ] );
+
+  var xScale = d3.scalePoint()
+        .domain (  monthsList  )
+        .range  ( [ lm, wt-lm-rm ] );  
+
+  var svg = d3.selectAll ( 'svg' )
+     .attr ( "width", wt )
+     .attr ( "height", ht );
+
+   svg.selectAll ( 'rect' )
+      .data ( dataset )
+	  .enter ()
+	  .append ( 'rect' )
+	  .attr ( "x", function (d) {  return xScale ( d[0]); } )
+	  .attr ( "y", function (d) {  return yScaleL ( d[1]); } )
+	  .attr ( "width",  barwidth )
+  	  .attr ( "height", function (d) {  return ht - yScaleL ( d[1]) - bm; } )
+      .style ( "fill", function (d) {  return colorChoices[ Number(d[0].substr( 4,4 ))-2019 ]; } )
+      .attr ( "info", function (d) {  return  Number(d[0].substr( 4,4 ))-2019 ; } )
+	  ;
+
+
+   svg.selectAll ( 'circle' )
+      .data ( dataset )
+	  .enter ()
+	  .append ( 'circle' )
+	  .attr ( "cx", function (d) {  return xScale ( d[0]) + (barwidth/2) ; } )
+	  .attr ( "cy", function (d) {  return yScaleR ( d[2]); } )
+	  .attr ( "r", 4  )
+      .style ( "fill", "black" )
+	  ;
+
+
+   svg.selectAll ( 'line' )
+      .data ( dataset.filter ( function(d) {  return d[0]!= "Jun 2020";  }  )  )
+	  .enter ()
+	  .append ( 'line' )
+	  .attr ( "x1", function (d) {  return xScale ( d[0]) + (barwidth/2) ; } )
+	  .attr ( "y1", function (d) {  return yScaleR ( d[2]); } )
+	  .attr ( "x2", function (d,i) {  return xScale ( dataset[i+1][0]) + (barwidth/2) ; } )
+	  .attr ( "y2", function (d,i) {  return yScaleR ( dataset[i+1][2]); } )
+      .style ( "stroke", "black" )
+      .style ( "stroke-width", "2px" )
+	  ;
+
+
+   svg.selectAll ( 'text' )
+      .data ( dataset )
+	  .enter ()
+	  .append ( 'text' )
+      .text ( function ( d )   { return d[0]; } )
+
+	  .attr ( "y", ht - ( bm/2)  )
+	  .attr ( "x", function (d) {  return xScale ( d[0]); } )
+
+      .attr ("class", "month-label" )	  
+//      .style ("text-anchor", "end" )	  
+//       .attr("transform", "translate(0, 0)rotate(45)")
+
+ //  .attr('transform', (d,i)=>{
+ //      return 'translate( '+xScale(i)+' , '+220+'),'+ 'rotate(45)';})
+        ;
+
+    var yAxisL  = d3.axisLeft().scale( yScaleL );
+    var yAxisR  = d3.axisRight().scale( yScaleR );
+
+    svg.append("g")
+       .attr("transform", "translate(100, 0)")
+       .call(yAxisL);
+
+    svg.append("g")
+       .attr("transform", "translate(800, 0)")
+       .call(yAxisR);
+
+
+     }
+
+	 
+  </script>
+
+   <style type="text/css">
+        svg { border: 5px;
+		      border-color: #000;
+             }
+		
+   </style>
+
+</head>
+
+
+<body onload="render()">
+<!--  bgcolor="green" -->
+
+  <svg id="utahPower"></svg>
+
+</body>
