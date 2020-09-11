@@ -1,0 +1,206 @@
+
+
+
+
+
+<head>
+<!DOCTYPE html>
+<meta charset="utf-8">
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v5.js"></script>
+
+<script language = "javascript">
+
+
+function render()
+{
+
+dims = {"height": 400, "width": 600};
+margin = {"top": 40, "right": 75 , "bottom": 40 , "left": 55};
+
+bar_separation = 25;
+
+
+var svg = d3.select("div#chartHere")
+  .append("svg")
+    .attr("width", dims.width)
+    .attr("height", dims.height)	;
+
+// Data source: https://en.wikipedia.org/wiki/Pennsylvanian_(train)
+////| group 1 = 199484:203392:207422:212006:218917:230767:231720:223114
+////| group 2 = 7819404:8453934:8856539:9281813:10431324:11447786:11530141:11555451
+////| units prefix = : $
+////| group names = Annual ridership:Annual revenue
+////| x legends = 2009:2010:2011:2012:2013:2014:2015:2016
+////| scale per group = 1
+////| colors = blue:red
+////| width = 800
+////}}
+
+  passengers = [199484,203392,207422,212006,218917,230767,231720,223114]
+  revenue = [7819404,8453934,8856539,9281813,10431324,11447786,11530141,11555451]
+  years = [ 2009,2010,2011,2012,2013,2014,2015,2016]
+
+  yScale_L = d3.scaleLinear()
+/// This domain for bar chart
+//     .domain  (  [  d3.max ( passengers ),   0 ] )
+     .domain  (  [  300000,   0 ] )
+	 .range   ( [ margin.top, dims.height - margin.bottom] )
+ ;
+
+  yScale_R = d3.scaleLinear()
+/// This domain for bar and line chart
+//   .domain  (  [  d3.max ( revenue ),   0 ] )
+     .domain  (  [  15000000,   0 ] )
+	 .range   ( [ margin.top, dims.height - margin.bottom] )
+ ;
+
+
+console.log ( years );
+
+
+
+
+  xScale_bars = d3.scalePoint()
+     .domain  (  years )
+	 .range   ( [ margin.left + ( bar_separation/2 ), dims.width - margin.right - ( bar_separation*2 ) ] )
+ ;
+
+console.log (  dims.width-margin.right );
+
+console.log ( xScale_bars ( 2009 ) );
+console.log ( xScale_bars ( 2016 ) );
+
+
+
+
+  var yAxis_L = d3.axisLeft()
+       .scale ( yScale_L )
+	   ;
+   svg.append("g")
+       .call ( yAxis_L )
+	   .attr ( "transform" , "translate(" + margin.left + ",0)");
+       ;
+
+  var yAxis_R = d3.axisRight()
+       .scale ( yScale_R )
+	   ;
+   svg.append("g")
+       .call (yAxis_R )
+	   .attr ( "transform" , "translate(" + (dims.width-margin.right) + ",0)");
+       ;
+
+  var xAxis = d3.axisBottom()
+       .scale (   xScale_bars  )
+	   ;
+
+   svg.append("g")
+       .call ( xAxis )
+	   .attr ( "transform" , "translate(" + + ((xScale_bars.step()-25)/2) +" ," + (dims.height - margin.bottom) + " )");
+       ;
+
+// BAR + LINE CHART  
+  svg.selectAll ( "rect")
+      .data ( passengers ).enter().append("rect")
+	  .attr ( "x", function (d,i) { return xScale_bars( years[i]); } )
+
+	  .attr ( "width", xScale_bars.step() - bar_separation )
+	  .attr ( "y", function(d) { return yScale_L (d); } )
+	  .attr ("height", function ( d ) {  return dims.height -margin.bottom - yScale_L (d); } )
+	  .attr ("fill", "#e3ba22")
+	  ;
+
+// BAR + LINE CHART  
+  svg.selectAll ( "circle")
+      .data ( revenue ).enter().append("circle")
+
+//	  .attr ( "cx", function (d,i) { return xScale_bars( years[i]) + xScale_bars.step(); } )
+	  .attr ( "cx", function (d,i) { return xScale_bars( years[i]) + ((xScale_bars.step()-bar_separation )/2); } )
+	  .attr ( "cy", function(d) { return yScale_R (d); } )
+      .attr ( "r", 5 )
+	  .attr ("fill", "#e6842a")
+	  ;
+
+// BAR + LINE CHART  
+  svg.selectAll ( "line.connector")
+      .data ( revenue.filter ( function ( d,i ) { return i<revenue.length-1; } ))
+	  .enter()
+	  .append("line")
+	  .attr ( "class", "connector" )
+
+	  .attr ( "x1", function (d,i) { return xScale_bars( years[i]) + ( (xScale_bars.step()-bar_separation ) / 2 ); } )
+	  .attr ( "y1", function(d) { return yScale_R (d); } )
+	  .attr ( "x2", function (d,i) { return xScale_bars( years[i+1]) + ( (xScale_bars.step()-bar_separation ) / 2 ); } )
+	  .attr ( "y2", function(d,i) { return yScale_R (revenue[i+1]); } )
+
+      .attr ( "stroke", "#e6842a" )
+      .attr ( "stroke-width", "2px" )
+	  ;
+
+     // Top line
+    svg.append("line")
+	   .attr ("x1", 0)
+	   .attr ("x2", dims.width)
+	   .attr ("y1", margin.top)
+	   .attr ("y2", margin.top)
+       .attr ( "stroke", "red")	 
+      ;	   
+
+     // bottom line
+    svg.append("line")
+	   .attr ("x1", 0)
+	   .attr ("x2", dims.width)
+	   .attr ("y1", dims.height-margin.bottom)
+	   .attr ("y2", dims.height-margin.bottom)
+       .attr ( "stroke", "red")	 
+      ;	   
+
+     // Left line
+    svg.append("line")
+	   .attr ("x1", margin.left)
+	   .attr ("x2", margin.left)
+	   .attr ("y1", 0 )
+	   .attr ("y2", dims.height)
+       .attr ( "stroke", "red")	 
+      ;	   
+
+     // Right line
+    svg.append("line")
+	   .attr ("x1", dims.width-margin.right)
+	   .attr ("x2", dims.width-margin.right)
+	   .attr ("y1", 0 )
+	   .attr ("y2", dims.height)
+       .attr ( "stroke", "red")	 
+      ;	   
+
+//margin = {"top": 40, "right": 40 , "bottom": 40 , "left": 30};
+
+
+
+
+}  // end of render()
+
+
+</script>
+
+
+<style type = "text/css">
+
+    svg {border: 0px; background-color: #f5f3f2; }
+
+</style>
+
+
+</head>
+
+<body onload = "render()">
+
+<h1>Amtrak Pennsylvanian</h1>
+<h3>Ridership and Revenue</h3>
+<!-- Create a div where the graph will take place -->
+<div id="chartHere"></div>
+<i>Data source: <a href="https://en.wikipedia.org/wiki/Pennsylvanian_(train)" style="text-decoration:none; link:visited:steelblue;">
+https://en.wikipedia.org/wiki/Pennsylvanian_(train)</a></i>
+
+
+</body>

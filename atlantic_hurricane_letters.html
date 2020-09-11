@@ -1,0 +1,856 @@
+
+
+
+
+
+<head>
+<!DOCTYPE html>
+<meta charset="utf-8">
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v5.js"></script>
+
+<script language = "javascript">
+
+
+function render()
+{
+
+//  atlantic_hurricanes.xlsx
+dataset = [
+ ['Andrea','5','2007-05-09','2007-05-11']
+,['Barry','S','2007-06-01','2007-06-05']
+,['Chantal','S','2007-07-31','2007-08-01']
+,['Dean','5','2007-08-13','2007-08-23']
+,['Erin','S','2007-08-15','2007-08-17']
+,['Felix','5','2007-08-31','2007-09-05']
+,['Gabrielle','S','2007-09-08','2007-09-11']
+,['Ingrid','S','2007-09-12','2007-09-17']
+,['Humberto','1','2007-09-12','2007-09-14']
+,['Ten','D','2007-09-21','2007-09-22']
+,['Jerry','S','2007-09-23','2007-09-24']
+,['Karen','1','2007-09-25','2007-09-29']
+,['Lorenzo','1','2007-09-25','2007-09-28']
+,['Melissa','S','2007-09-28','2007-09-30']
+,['Fifteen','D','2007-10-11','2007-10-12']
+,['Noel','1','2007-10-28','2007-11-02']
+,['Olga','S','2007-12-11','2007-12-13']
+
+
+,['Arthur','S','2008-05-31','2008-06-02']
+,['Bertha','3','2008-07-03','2008-07-20']
+,['Cristobal','S','2008-07-19','2008-07-23']
+,['Dolly','2','2008-07-20','2008-07-25']
+,['Edouard','S','2008-08-03','2008-08-06']
+,['Fay','S','2008-08-15','2008-08-27']
+,['Gustav','4','2008-08-25','2008-09-04']
+,['Hanna','1','2008-08-28','2008-09-07']
+,['Ike','4','2008-09-01','2008-09-14']
+,['Josephine','S','2008-09-02','2008-09-06']
+,['Kyle','1','2008-09-25','2008-09-29']
+,['Laura','S','2008-09-29','2008-10-01']
+,['Marco','S','2008-10-06','2008-10-07']
+,['Nana','S','2008-10-12','2008-10-14']
+,['Omar','4','2008-10-13','2008-10-18']
+,['Sixteen','D','2008-10-14','2008-10-15']
+,['Paloma','4','2008-11-05','2008-11-10']
+
+
+,['One','D','2009-05-28','2009-05-29']
+,['Ana','S','2009-08-11','2009-08-16']
+,['Bill','4','2009-08-15','2009-08-24']
+,['Claudette','S','2009-08-16','2009-08-18']
+,['Danny','S','2009-08-26','2009-08-29']
+,['Erika','S','2009-09-01','2009-09-03']
+,['Fred','3','2009-09-07','2009-09-12']
+,['Eight','D','2009-09-25','2009-09-26']
+,['Grace','S','2009-10-04','2009-10-06']
+,['Henri','S','2009-10-06','2009-10-08']
+,['Ida','2','2009-11-04','2009-11-10']
+
+
+,['Alex','2','2010-06-25','2010-07-02']
+,['Two','D','2010-07-08','2010-07-09']
+,['Bonnie','S','2010-07-22','2010-07-24']
+,['Colin','S','2010-08-02','2010-08-08']
+,['Five','D','2010-08-10','2010-08-11']
+,['Danielle','4','2010-08-21','2010-08-30']
+,['Earl','4','2010-08-25','2010-09-04']
+,['Fiona','S','2010-08-30','2010-09-03']
+,['Gaston','S','2010-09-01','2010-09-02']
+,['Hermine','S','2010-09-05','2010-09-09']
+,['Igor','4','2010-09-08','2010-09-21']
+,['Julia','4','2010-09-12','2010-09-20']
+,['Karl','3','2010-09-14','2010-09-18']
+,['Lisa','1','2010-09-20','2010-09-26']
+,['Matthew','S','2010-09-23','2010-09-26']
+,['Nicole','S','2010-09-28','2010-09-29']
+,['Otto','1','2010-10-06','2010-10-10']
+,['Paula','2','2010-10-11','2010-10-15']
+,['Richard','2','2010-10-20','2010-10-26']
+,['Shary','1','2010-10-28','2010-10-30']
+,['Tomas','2','2010-10-29','2010-11-07']
+
+
+,['Arlene','S','2011-06-28','2011-07-01']
+,['Bret','S','2011-07-17','2011-07-22']
+,['Cindy','S','2011-07-20','2011-07-22']
+,['Don','S','2011-07-27','2011-07-30']
+,['Emily','S','2011-08-02','2011-08-07']
+,['Franklin','S','2011-08-12','2011-08-13']
+,['Gert','S','2011-08-13','2011-08-16']
+,['Harvey','S','2011-08-19','2011-08-22']
+,['Irene','3','2011-08-21','2011-08-28']
+,['Ten','D','2011-08-25','2011-08-26']
+,['Jose','S','2011-08-27','2011-08-28']
+,['Katia','4','2011-08-29','2011-09-10']
+,['Unnamed','S','2011-08-31','2011-09-03']
+,['Lee','S','2011-09-01','2011-09-05']
+,['Maria','1','2011-09-06','2011-09-16']
+,['Nate','1','2011-09-07','2011-09-11']
+,['Ophelia','4','2011-09-20','2011-10-03']
+,['Philippe','1','2011-09-24','2011-10-08']
+,['Rina','3','2011-10-23','2011-10-28']
+,['Sean','S','2011-11-08','2011-11-11']
+
+
+,['Alberto','S','2012-05-19','2012-05-22']
+,['Beryl','S','2012-05-26','2012-05-30']
+,['Chris','1','2012-06-18','2012-06-22']
+,['Debby','S','2012-06-23','2012-06-27']
+,['Ernesto','2','2012-08-01','2012-08-10']
+,['Florence','S','2012-08-03','2012-08-06']
+,['Helene','S','2012-08-09','2012-08-18']
+,['Gordon','2','2012-08-15','2012-08-20']
+,['Isaac','1','2012-08-21','2012-09-01']
+,['Joyce','S','2012-08-22','2012-08-24']
+,['Kirk','2','2012-08-28','2012-09-02']
+,['Leslie','1','2012-08-30','2012-09-11']
+,['Michael','3','2012-09-03','2012-09-11']
+,['Nadine','1','2012-09-10','2012-10-04']
+,['Oscar','S','2012-10-03','2012-10-05']
+,['Patty','S','2012-10-11','2012-10-13']
+,['Rafael','1','2012-10-12','2012-10-17']
+,['Sandy','3','2012-10-22','2012-10-29']
+,['Tony','S','2012-10-22','2012-10-25']
+
+
+,['Andrea','S','2013-06-05','2013-06-07']
+,['Barry','S','2013-06-17','2013-06-20']
+,['Chantal','S','2013-07-07','2013-07-10']
+,['Dorian','S','2013-07-23','2013-08-03']
+,['Erin','S','2013-08-15','2013-08-18']
+,['Fernand','S','2013-08-25','2013-08-26']
+,['Gabrielle','S','2013-09-04','2013-09-13']
+,['Eight','D','2013-09-06','2013-09-07']
+,['Humberto','1','2013-09-08','2013-09-19']
+,['Ingrid','1','2013-09-12','2013-09-17']
+,['Jerry','S','2013-09-29','2013-10-03']
+,['Karen','S','2013-10-03','2013-10-06']
+,['Lorenzo','S','2013-10-21','2013-10-24']
+,['Melissa','S','2013-11-18','2013-11-21']
+,['Unnamed','5','2013-12-05','2013-12-07']
+
+
+,['Arthur','2','2014-07-01','2014-07-05']
+,['Two','D','2014-07-21','2014-07-23']
+,['Bertha','1','2014-08-01','2014-08-06']
+,['Cristobal','1','2014-08-23','2014-08-29']
+,['Dolly','S','2014-09-01','2014-09-03']
+,['Edouard','3','2014-09-11','2014-09-19']
+,['Fay','1','2014-10-10','2014-10-13']
+,['Gonzalo','4','2014-10-12','2014-10-19']
+,['Hanna','S','2014-10-22','2014-10-28']
+
+
+,['Ana','S','2015-05-08','2015-05-11']
+,['Bill','S','2015-06-16','2015-06-18']
+,['Claudette','S','2015-07-13','2015-07-14']
+,['Danny','3','2015-08-18','2015-08-24']
+,['Erika','S','2015-08-25','2015-08-29']
+,['Fred','1','2015-08-30','2015-09-06']
+,['Grace','S','2015-09-05','2015-09-09']
+,['Henri','S','2015-09-08','2015-09-11']
+,['Nine','D','2015-09-16','2015-09-19']
+,['Ida','S','2015-09-18','2015-09-27']
+,['Joaquin','4','2015-09-28','2015-10-08']
+,['Kate','1','2015-11-08','2015-11-11']
+
+
+,['Alex','1','2016-01-12','2016-01-15']
+,['Bonnie','S','2016-05-27','2016-06-04']
+,['Colin','S','2016-06-05','2016-06-07']
+,['Danielle','S','2016-06-19','2016-06-21']
+,['Earl','1','2016-08-02','2016-08-06']
+,['Fiona','S','2016-08-16','2016-08-23']
+,['Gaston','3','2016-08-22','2016-09-02']
+,['Eight','D','2016-08-28','2016-09-01']
+,['Hermine','1','2016-08-28','2016-09-03']
+,['Ian','S','2016-09-12','2016-09-16']
+,['Julia','S','2016-09-13','2016-09-18']
+,['Karl','S','2016-09-14','2016-09-25']
+,['Lisa','S','2016-09-19','2016-09-25']
+,['Matthew','5','2016-09-28','2016-10-09']
+,['Nicole','4','2016-10-04','2016-10-18']
+,['Otto','3','2016-11-20','2016-11-25']
+
+
+,['Arlene','S','2017-04-19','2017-04-21']
+,['Bret','S','2017-06-19','2017-06-20']
+,['Cindy','S','2017-06-20','2017-06-23']
+,['Four','D','2017-07-05','2017-07-07']
+,['Don','S','2017-07-17','2017-07-18']
+,['Emily','S','2017-07-30','2017-08-01']
+,['Franklin','1','2017-08-07','2017-08-10']
+,['Gert','2','2017-08-12','2017-08-17']
+,['Harvey','4','2017-08-17','2017-09-01']
+,['Irma','5','2017-08-30','2017-09-12']
+,['Jose','4','2017-09-05','2017-09-22']
+,['Katia','2','2017-09-05','2017-09-09']
+,['Lee','3','2017-09-15','2017-09-30']
+,['Maria','5','2017-09-16','2017-09-30']
+,['Nate','1','2017-10-04','2017-10-08']
+,['Ophelia','3','2017-10-09','2017-10-15']
+,['Philippe','S','2017-10-28','2017-10-29']
+,['Rina','S','2017-11-05','2017-11-09']
+
+
+,['Alberto','S','2018-05-25','2018-05-31']
+,['Beryl','1','2018-07-04','2018-07-15']
+,['Chris','2','2018-07-06','2018-07-12']
+,['Debby','S','2018-08-07','2018-08-09']
+,['Ernesto','S','2018-08-15','2018-08-17']
+,['Florence','4','2018-08-31','2018-09-17']
+,['Gordon','S','2018-09-03','2018-09-06']
+,['Helene','2','2018-09-07','2018-09-16']
+,['Isaac','1','2018-09-07','2018-09-15']
+,['Joyce','S','2018-09-12','2018-09-18']
+,['Eleven','D','2018-09-21','2018-09-22']
+,['Kirk','S','2018-09-22','2018-09-28']
+,['Leslie','1','2018-09-23','2018-10-13']
+,['Michael','5','2018-10-07','2018-10-11']
+,['Nadine','S','2018-10-09','2018-10-12']
+,['Oscar','2','2018-10-26','2018-10-31']
+
+,['Andrea','5','2019-05-20','2019-05-21']
+,['Barry','1','2019-07-11','2019-07-15']
+,['Three','D','2019-07-22','2019-07-23']
+,['Chantal','S','2019-08-20','2019-08-23']
+,['Dorian','5','2019-08-24','2019-09-07']
+,['Erin','S','2019-08-26','2019-08-29']
+,['Fernand','S','2019-09-03','2019-09-05']
+,['Gabrielle','S','2019-09-03','2019-09-10']
+,['Humberto','3','2019-09-13','2019-09-19']
+,['Jerry','2','2019-09-17','2019-09-24']
+,['Imelda','S','2019-09-17','2019-09-19']
+,['Karen','S','2019-09-22','2019-09-27']
+,['Lorenzo','5','2019-09-23','2019-10-02']
+,['Melissa','S','2019-10-11','2019-10-14']
+,['Fifteen','D','2019-10-14','2019-10-16']
+,['Nestor','S','2019-10-18','2019-10-19']
+,['Olga','S','2019-10-25','2019-10-25']
+,['Pablo','1','2019-10-25','2019-10-28']
+,['Rebekah','5','2019-10-30','2019-11-01']
+,['Sebastien','S','2019-11-19','2019-11-24']
+
+]
+
+
+letters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','R','S','T','Alpha','Beta','Gamma']
+daysInMonths = [31,28,31,30,31,30,31,31,30,31,30,31];
+Months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+currentMonth = 3;
+currentDayNo = 30;
+datesArray = [];
+lineLengthsArray = [];
+monthLinesArray = []
+yearLetterPoints = [];
+dateTranslationDict = {};
+uniqueYearsDict = {}
+
+daysBoxes = []
+for ( i=0;i<=213;i++ )  // 183 days = May 31 to Nov 30, inclusive
+{
+    daysBoxes.push (i);
+    datesArray.push (  Months[currentMonth] + " " + currentDayNo  ); 
+
+    if (  currentMonth == 3  ) { lineLengthsArray.push(0); } 
+    else if (  currentDayNo == daysInMonths [currentMonth] ) { lineLengthsArray.push(20); 
+                                                            	monthLinesArray.push (i);
+	} 
+    else if (  currentDayNo == 10 ||  currentDayNo == 20 ) { lineLengthsArray.push(10); } 
+    else  { lineLengthsArray.push(3); } 
+
+	if  ( currentDayNo == daysInMonths [currentMonth] )
+	    { currentMonth++
+	      currentDayNo = 1 }
+	else { currentDayNo++ }	
+
+    dateTranslationDict[(i-30)] = Months[currentMonth] + " " + currentDayNo
+
+}
+
+
+function calculateDayNumber ( param ) 
+{
+   v_calendar_month = parseInt(param.substr(5,2));
+   v_calendar_day   = parseInt(param.substr(8,2));
+   if      ( v_calendar_month ==  6 )  { returnVal =   0;  }
+   else if ( v_calendar_month ==  7 )  { returnVal =  30;  }
+   else if ( v_calendar_month ==  8 )  { returnVal =  61;  }
+   else if ( v_calendar_month ==  9 )  { returnVal =  92;  }
+   else if ( v_calendar_month == 10 )  { returnVal = 122;  }
+   else if ( v_calendar_month == 11 )  { returnVal = 153;  }
+   else if ( v_calendar_month == 12 )  { returnVal = 184;  }
+   else if ( v_calendar_month ==  5 )  { returnVal = -31;  }
+   else if ( v_calendar_month ==  4 )  { returnVal = -61;  }
+   else if ( v_calendar_month ==  3 )  { returnVal = -92;  }
+   else if ( v_calendar_month ==  2 )  { returnVal =-120; }
+   else if ( v_calendar_month ==  1 )  { returnVal =-151; }
+
+   returnVal += ( v_calendar_day-1); 
+   return returnVal;
+}
+
+letterA = [];
+letterB = [];
+letterC = [];
+letterD = [];
+letterE = [];
+letterF = [];
+letterG = [];
+letterH = [];
+letterI = [];
+letterJ = [];
+letterK = [];
+letterL = [];
+letterM = [];
+letterN = [];
+letterO = [];
+letterP = [];
+letterQ = [];
+letterR = [];
+letterS = [];
+letterT = [];
+letterU = [];
+letterV = [];
+letterW = [];
+letterX = [];
+letterY = [];
+letterZ = [];
+
+for ( i=0; i<dataset.length; i++ ) 
+{
+   // Skip unnamed storms in dataset...
+   if  ( dataset[i][0] == "One"     ) { continue; }
+   if  ( dataset[i][0] == "Two"     ) { continue; }
+   if  ( dataset[i][0] == "Three"   ) { continue; }
+   if  ( dataset[i][0] == "Four"    ) { continue; }
+   if  ( dataset[i][0] == "Five"    ) { continue; }
+   if  ( dataset[i][0] == "Six"     ) { continue; }
+   if  ( dataset[i][0] == "Seven"   ) { continue; }
+   if  ( dataset[i][0] == "Eight"   ) { continue; }
+   if  ( dataset[i][0] == "Nine"    ) { continue; }
+   if  ( dataset[i][0] == "Ten"     ) { continue; }
+   
+   if  ( dataset[i][0] == "Eleven"     ) { continue; }
+   if  ( dataset[i][0] == "Twelve"     ) { continue; }
+   if  ( dataset[i][0] == "Thirteen"     ) { continue; }
+   if  ( dataset[i][0] == "Fourteen"     ) { continue; }
+   if  ( dataset[i][0] == "Fifteen"     ) { continue; }
+   if  ( dataset[i][0] == "Sixteen"     ) { continue; }
+   if  ( dataset[i][0] == "Seventeen"     ) { continue; }
+   if  ( dataset[i][0] == "Eighteen"     ) { continue; }
+   if  ( dataset[i][0] == "Nineteen"     ) { continue; }
+   if  ( dataset[i][0] == "Twenty"     ) { continue; }
+   
+   if  ( dataset[i][0] == "Unnamed" ) { continue; }
+
+   if (  dataset[i][0].substr(0,1) == "A" ) { letterA.push (   calculateDayNumber ( dataset[i][2] ) ); }
+   if (  dataset[i][0].substr(0,1) == "B" ) { letterB.push (   calculateDayNumber ( dataset[i][2] ) ); }
+   if (  dataset[i][0].substr(0,1) == "C" ) { letterC.push (   calculateDayNumber ( dataset[i][2] ) ); }
+   if (  dataset[i][0].substr(0,1) == "D" ) { letterD.push (   calculateDayNumber ( dataset[i][2] ) ); }
+   if (  dataset[i][0].substr(0,1) == "E" ) { letterE.push (   calculateDayNumber ( dataset[i][2] ) ); }
+   if (  dataset[i][0].substr(0,1) == "F" ) { letterF.push (   calculateDayNumber ( dataset[i][2] ) ); }
+   if (  dataset[i][0].substr(0,1) == "G" ) { letterG.push (   calculateDayNumber ( dataset[i][2] ) ); }
+   if (  dataset[i][0].substr(0,1) == "H" ) { letterH.push (   calculateDayNumber ( dataset[i][2] ) ); }
+   if (  dataset[i][0].substr(0,1) == "I" ) { letterI.push (   calculateDayNumber ( dataset[i][2] ) ); }
+   if (  dataset[i][0].substr(0,1) == "J" ) { letterJ.push (   calculateDayNumber ( dataset[i][2] ) ); }
+   if (  dataset[i][0].substr(0,1) == "K" ) { letterK.push (   calculateDayNumber ( dataset[i][2] ) ); }
+   if (  dataset[i][0].substr(0,1) == "L" ) { letterL.push (   calculateDayNumber ( dataset[i][2] ) ); }
+   if (  dataset[i][0].substr(0,1) == "M" ) { letterM.push (   calculateDayNumber ( dataset[i][2] ) ); }
+   if (  dataset[i][0].substr(0,1) == "N" ) { letterN.push (   calculateDayNumber ( dataset[i][2] ) ); }
+   if (  dataset[i][0].substr(0,1) == "O" ) { letterO.push (   calculateDayNumber ( dataset[i][2] ) ); }
+   if (  dataset[i][0].substr(0,1) == "P" ) { letterP.push (   calculateDayNumber ( dataset[i][2] ) ); }
+   if (  dataset[i][0].substr(0,1) == "R" ) { letterR.push (   calculateDayNumber ( dataset[i][2] ) ); }
+   if (  dataset[i][0].substr(0,1) == "S" ) { letterS.push (   calculateDayNumber ( dataset[i][2] ) ); }
+   if (  dataset[i][0].substr(0,1) == "T" ) { letterT.push (   calculateDayNumber ( dataset[i][2] ) ); }
+
+   yearLetterPoints.push ( [  parseInt ( dataset[i][2].substr(0,4) ), dataset[i][0].substr(0,1), calculateDayNumber ( dataset[i][2] ), calculateDayNumber ( dataset[i][3] )
+            , dataset[i][0]
+            , dataset[i][2]
+   ]  );
+   uniqueYearsDict [ dataset[i][2].substr(0,4) ] = 0;  // The will grab the field from EVERY record and assign it to zero. No need to look for distinct values
+
+}
+
+
+uniqueYears = Object.keys( uniqueYearsDict ).map (   keys => parseInt (  keys ) );  // Collected as array of integers
+
+
+averageA = letterA.reduce(function(a, b){ return a + b; }, 0) / letterA.length;
+averageB = letterB.reduce(function(a, b){ return a + b; }, 0) / letterB.length;
+averageC = letterC.reduce(function(a, b){ return a + b; }, 0) / letterC.length;
+averageD = letterD.reduce(function(a, b){ return a + b; }, 0) / letterD.length;
+averageE = letterE.reduce(function(a, b){ return a + b; }, 0) / letterE.length;
+averageF = letterF.reduce(function(a, b){ return a + b; }, 0) / letterF.length;
+averageG = letterG.reduce(function(a, b){ return a + b; }, 0) / letterG.length;
+averageH = letterH.reduce(function(a, b){ return a + b; }, 0) / letterH.length;
+averageI = letterI.reduce(function(a, b){ return a + b; }, 0) / letterI.length;
+averageJ = letterJ.reduce(function(a, b){ return a + b; }, 0) / letterJ.length;
+averageK = letterK.reduce(function(a, b){ return a + b; }, 0) / letterK.length;
+averageL = letterL.reduce(function(a, b){ return a + b; }, 0) / letterL.length;
+averageM = letterM.reduce(function(a, b){ return a + b; }, 0) / letterM.length;
+averageN = letterN.reduce(function(a, b){ return a + b; }, 0) / letterN.length;
+averageO = letterO.reduce(function(a, b){ return a + b; }, 0) / letterO.length;
+averageP = letterP.reduce(function(a, b){ return a + b; }, 0) / letterP.length;
+averageR = letterR.reduce(function(a, b){ return a + b; }, 0) / letterR.length;
+averageS = letterS.reduce(function(a, b){ return a + b; }, 0) / letterS.length;
+averageT = letterT.reduce(function(a, b){ return a + b; }, 0) / letterT.length;
+
+
+averages = []
+
+averages.push ( Math.round( averageA ) );
+averages.push ( Math.round( averageB ) );
+averages.push ( Math.round( averageC ) );
+averages.push ( Math.round( averageD ) );
+averages.push ( Math.round( averageE ) );
+averages.push ( Math.round( averageF ) );
+averages.push ( Math.round( averageG ) );
+averages.push ( Math.round( averageH ) );
+averages.push ( Math.round( averageI ) );
+averages.push ( Math.round( averageJ ) );
+averages.push ( Math.round( averageK ) );
+averages.push ( Math.round( averageL ) );
+averages.push ( Math.round( averageM ) );
+averages.push ( Math.round( averageN ) );
+averages.push ( Math.round( averageO ) );
+averages.push ( Math.round( averageP ) );
+averages.push ( Math.round( averageR ) );
+averages.push ( Math.round( averageS ) );
+averages.push ( Math.round( averageT ) );
+
+
+dims = {"height": 600, "width": 1250};
+margin = {"top": 75, "right": 40 , "bottom": 40 , "left": 40};
+tickWidth = ( dims.width - margin.left - margin.right ) / daysBoxes.length;
+
+var xScale = d3.scaleLinear()
+    .domain ( [-30,183] )
+	.range ( [margin.left, dims.width - margin.right] )
+;
+
+
+var yScale = d3.scaleLinear()
+    .domain ( [ d3.min ( uniqueYears) -0.5, d3.max ( uniqueYears) +1.5 ] )     // Leaves space after the highest value for the averages band. Additionally, the +1 and -1 settle right on the margin lines  
+	.range ( [margin.top, dims.height - margin.bottom] )
+;
+
+//boxOverDimension = yScale.step();
+yStep = yScale(2007) - yScale(2006);  // The distance between two consecutive integer values on the y-Axis
+
+var svg = d3.select("div#chartHere")
+    .append("svg")
+    .attr("width", dims.width)
+    .attr("height", dims.height)	;
+
+
+var chartLabelArea = svg.selectAll("rect.svglabel")
+		.data ( [1] )
+        .enter()
+    	.append("rect")
+        .attr("class", "svglabel")
+       	.attr("x", 2)
+       	.attr("y", 10)
+       	.attr("width", dims.width-4)
+       	.attr("height", margin.top - 20)
+       	.style("fill", "#f5f3f2")
+       	.style("stroke", "white" )
+       	.style("stroke-width", "1px")
+        ;
+
+
+var chartLabel = svg.selectAll("text.chartlabel")
+		.data ( [1] )
+        .enter()
+        .append("text")
+        .attr("class", "chartlabel")
+        .attr("x", 25 )
+        .attr("y", margin.top/2 )
+        .attr ( "fill", "#635f5d") 
+        .attr ( "font-size", "20px")
+        .attr ( "font-family", "ITC Franklin, Arial,sans-serif")
+        .text( "Average Dates for Atantic Hurricanes, by Letter"  )
+    	.style ( "dominant-baseline", "middle" )    // vertical centering
+		;
+
+
+
+
+var monthLines = svg.selectAll ( "line.monthlines" )
+    .data ( monthLinesArray )
+    .enter().append ( "line" ).attr("class","monthlines")
+    .attr("x1", function (d) { return d*tickWidth; } )
+    .attr("x2", function (d) { return d*tickWidth; } )
+    .attr("y1", margin.top )
+    .attr("y2", dims.height-margin.bottom )
+    .attr ( "stroke","rgba(8,8,8,0.3)")
+    .attr ( "transform", "translate(" + margin.left + ",0)")
+;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+scaleMarks = svg.selectAll("g.scaleMarks")
+   .data ( [1] )
+   .enter().append("g").attr("class","scaleMarks")
+     .attr ( "transform", "translate(" + margin.left + "," + (dims.height-margin.bottom) + ")")
+
+marks = scaleMarks.selectAll("line.mark")
+   .data ( daysBoxes )
+   .enter().append ( "line" ).attr("class","mark")
+   .attr("x1", function (d,i) { return i*tickWidth; } )
+   .attr("x2", function (d,i) { return i*tickWidth } )
+   .attr("y1", 0 )
+   .attr("y2", function (d) { return lineLengthsArray[d]; } )
+// .attr ( "stroke","black")
+   .attr ( "stroke", "rgb(19,123,128)" )   // Sunlight Fdn: Another different thing
+   ;
+
+monthLegend = scaleMarks.selectAll("text.monthLegend")
+   .data ( Months.filter ( function (d,i) { return i>3 && i<11; } ) ) 
+   .enter().append ( "text" ).attr("class","monthLegend")
+    .text ( function (d) { return d; } )
+   .attr("x", function (d,i) { return ( i==0 ? 15 : ( monthLinesArray[i-1]+15 ) ) * tickWidth; } )
+   .attr("y", margin.bottom*2/3 )   // Because this is being appended to the "g" group at the bottom and then transformed
+   .attr ( "stroke", "rgb(19,123,128)" )   // Sunlight Fdn: Another different thing
+   .style ( "text-anchor","middle")
+    .attr ( "font-family", "ITC Franklin, Arial,sans-serif")
+   ;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+boxOver = svg.selectAll ( "rect.boxOver")
+    .data ( yearLetterPoints )
+    .enter().append ("rect").attr ( "class", function (d) { return "boxOver boxes" + d[1]; } )	
+	.attr ( "x", function (d) { return xScale(d[2]) - yStep/4; } )
+	.attr ( "y", function (d) { return yScale(d[0]) - yStep/2; } )
+    .attr ( "width", yStep/2 )
+    .attr ( "height", yStep )
+    .attr ( "fill", "rgb(230,132,42)" )  // Sunlight Fdn - A different thing
+	.attr ( "stroke", "steelblue" )
+	.style ( "stroke-width", 2 )
+	.style ( "opacity", 0 )
+	;
+
+
+console.log ( yearLetterPoints );
+
+dots = svg.selectAll ( "text.dots")
+    .data ( yearLetterPoints )
+    .enter().append ("text").attr ( "class", function (d) { return "dots letter" + d[1]; } )	
+	.attr ( "x", function (d) { return xScale(d[2]); } )
+	.attr ( "y", function (d) { return yScale(d[0]); } )
+	.text (  function (d) { return d[1]; } )
+	.attr ( "stroke", "rgb(19,123,128)" )   // Sunlight Fdn: Another different thing
+	.style ( "font-size", "10" )
+	.attr ( "font-family", "ITC Franklin, Arial,sans-serif")
+    .style ( "text-anchor", "middle" )          // horizontal centering
+	.style ( "dominant-baseline", "middle" )    // vertical centering
+
+	.on ( "mouseover", function(d,i) { handleMouseOver ( d[0], d[4],d[5], xScale(d[2]), yScale(d[0]) ); } )
+	.on ( "mouseout",  function(d) { handleMouseOut ( ); } )
+	;
+
+// [2007, "A", -23, -21, "Andrea", "2007-05-09"]	
+	
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// These circles are not in the "g" group because I do not know how to reference the underlying for the tooltip unless I have the dataset at this level
+avgs = svg.selectAll ( "circle.averages")
+    .data ( averages )
+    .enter().append ("circle").attr ( "class","averages" )	
+	.attr ( "cx", function (d) { return xScale(d); } )
+	.attr ( "cy",  yScale(  d3.max ( uniqueYears)+1  ) )    // We left space for the averages band when we created the yScale
+	.attr ( "r", 10 )
+	.attr ( "fill", "rgb(227,186,34)" ) // Sunlight Fdn = A thing
+	.attr ( "stroke", "rgb(19,123,128)" )   // Sunlight Fdn = Another different thing
+	.attr ( "stroke-width", "2" )
+    .attr ( "info", function(d) {return d;} )
+	.on ( "mouseover", function(d,i) { handleMouseActionAvg ( "ON", d,i, xScale(d), dims.height-margin.bottom  ); } )
+	.on ( "mouseout",  function(d,i) { handleMouseActionAvg ( "OFF",d,i,0,0 ); } )
+	.on ( "click",     function(d,i) { handleMouseActionAvg ( "CLICK",d,i,0,0 ); } )
+	;
+
+avgL = svg.selectAll ( "text.averages")
+    .data ( averages )
+    .enter().append ("text").attr ( "class", "averages" )	
+	.attr ( "x", function (d) { return xScale(d); } )
+	.attr ( "y", function (d) { return yScale(  d3.max ( uniqueYears) +1  ); } )  // We left space for the averages band when we created the yScale
+	.text (  function (d,i) { return letters[i]; } )
+	.attr ( "stroke", "rgb(19,123,128)" )   // Sunlight Fdn: Another different thing
+	.style ( "font-size", "10" )
+	.attr ( "font-family", "ITC Franklin, Arial,sans-serif")
+    .style ( "text-anchor", "middle" )          // horizontal centering
+	.style ( "dominant-baseline", "middle" )    // vertical centering
+	.on ( "mouseover", function(d,i) { handleMouseActionAvg ( "ON", d,i, xScale(d), dims.height-margin.bottom  ); } )
+	.on ( "mouseout",  function(d,i) { handleMouseActionAvg ( "OFF",d,i,0,0 ); } )
+	.on ( "click",     function(d,i) { handleMouseActionAvg ( "CLICK",d,i,0,0 ); } )
+    ;
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+avgdots = svg.selectAll ("g.avgDots")
+    .data ( averages )
+    .enter().append("g").attr("class","avgDots")
+    .attr ( "transform", function (d) { return  "translate(" + xScale(d) + "," + yScale(d3.max ( uniqueYears )+1 ) + ")"; } )
+    ;
+	 
+spikyTops = avgdots.selectAll ( "line.spikyTops" )
+    .data ( [1] )
+    .enter().append ("line").attr ( "class","spikyTops")	
+	.attr ( "x1", 0 )
+	.attr ( "x2", 0 )
+	.attr ( "y1", -10 - ( yStep - 10 )/2 )
+	.attr ( "y2", -10 )
+	.attr ( "stroke", "rgb(19,123,128)" )   // Sunlight Fdn: Another different thing
+	.attr ( "stroke-width", "2" )
+    .attr ( "info", function(d) {return d;} )
+    ;
+	
+spikyTops = avgdots.selectAll ( "line.spikyBottoms" )
+    .data ( [1] )
+    .enter().append ("line").attr ( "class","spikyBottoms")	
+	.attr ( "x1", 0 )
+	.attr ( "x2", 0 )
+	.attr ( "y1", 10 )
+	.attr ( "y2", 10 + ( yStep - 10 )/2 )
+	.attr ( "stroke", "rgb(19,123,128)" )   // Sunlight Fdn: Another different thing
+	.attr ( "stroke-width", "2" )
+    .attr ( "info", function(d) {return d;} )
+    ;
+
+
+
+
+//////////////////////////////////////////////////////////////////////
+
+//uniqueYears.push ( "Avg");
+
+var yearLabels = svg.selectAll ( "text.yearLabels" )
+    .data ( uniqueYears )
+    .enter().append ( "text" ).attr("class","yearLabels")
+    .text ( function (d) { return d; } )
+    .attr("x", 0 )
+    .attr("y", 0 )
+	.attr ( "stroke", "rgb(19,123,128)" )   // Sunlight Fdn: Another different thing
+	.style ( "font-weight", "normal" )
+	.attr ( "font-family", "ITC Franklin, Arial,sans-serif")
+	.style ( "dominant-baseline", "middle" )    // vertical centering
+    .attr ( "transform", function (d) { return "translate(0," + yScale ( d ) + ")" } )
+;
+
+//uniqueYears.pop (  );
+
+// Make this a rectangle with alternating patterm
+var monthLines = svg.selectAll ( "line.years" )
+    .data ( uniqueYears )
+    .enter().append ( "line" ).attr("class","years")
+    .attr("x1", 0 )
+    .attr("x2", dims.width - margin.right)
+    .attr("y1", yStep/2 )
+    .attr("y2", yStep/2 )
+    .attr ( "stroke","#fff")
+    .attr ( "stroke-width", 1)	 
+    .style ( "line-style","dashed")
+    .attr ( "transform", function (d) { return "translate(0," + yScale ( d ) + ")" } )
+;
+
+//////////////////////////////////////////////////////////////////////
+
+     // Top line
+    svg.append("line")
+	   .attr ("x1", 0)
+	   .attr ("x2", dims.width)
+	   .attr ("y1", margin.top)
+	   .attr ("y2", margin.top)
+	   .attr ( "stroke","rgba(8,8,8,0.3)")
+       .attr ( "stroke-width", 1)	 
+      ;	   
+
+     // bottom line
+    svg.append("line")
+	   .attr ("x1", 0)
+	   .attr ("x2", dims.width)
+	   .attr ("y1", dims.height-margin.bottom)
+	   .attr ("y2", dims.height-margin.bottom)
+       .attr ( "stroke", "#fff")	 
+       .attr ( "stroke-width", 2)	 
+      ;	   
+
+     // Left line
+    svg.append("line")
+	   .attr ("x1", margin.left)
+	   .attr ("x2", margin.left)
+	   .attr ("y1", margin.top )
+	   .attr ("y2", dims.height)
+       .attr ( "stroke", "#fff")	 
+       .attr ( "stroke-width", 2)	 
+      ;	   
+
+     // Right line
+    svg.append("line")
+	   .attr ("x1", dims.width-margin.right)
+	   .attr ("x2", dims.width-margin.right)
+	   .attr ("y1", margin.top )
+	   .attr ("y2", dims.height)
+	   .attr ( "stroke","rgba(8,8,8,0.3)")
+       .attr ( "stroke-width", 2)	 
+      ;	   
+
+}  // end of render()
+
+clickedToggle = 0
+clickedLetter =""
+
+function handleMouseActionAvg ( action, daysAfterMay1, iterative, xPos, yPos ) 
+{ 
+// iterative is a number from 0-19, telling us which of the twenty averages called the tooltip function. We can derive the letter from the position (0=A, 1=B, etc)
+
+    var tooltipDiv = document.getElementById ("tooltipDiv");
+    tooltipDiv.innerHTML  = "Letter " + letters[iterative]	+ "<br/>" 
+		       + "Average date: "  + dateTranslationDict [ daysAfterMay1 ];
+
+    tooltipDiv.style.left = xPos;
+    tooltipDiv.style.top  = yPos;    
+    tooltipDiv.style.opacity = 0.9;
+
+    if ( action == "CLICK" ) { 
+
+        if  ( clickedToggle == 0 ) 
+		{ 
+		    clickedToggle = 1;
+            clickedLetter = letters[iterative];			
+		} 
+		else 
+		{   
+		    clickedToggle = 0; 
+        }
+
+	    var sameLetters = document.getElementsByClassName ("letter" + clickedLetter );
+
+        for ( i=0; i< sameLetters.length; i++ )   
+    	{   
+    		sameLetters[i].style.fontWeight = clickedToggle==1?"bold":"normal";
+    		sameLetters[i].style.fontSize   = clickedToggle==1?20:10;
+    		sameLetters[i].style.stroke     = clickedToggle==1?"white":"rgb(19,123,128)" ;    // Sunlight Fdn: Another different thing
+    		sameLetters[i].style.fill       = clickedToggle==1?"white":"rgb(19,123,128)" ;    // Sunlight Fdn: Another different thing
+    	}		   
+
+        var boxOvers = document.getElementsByClassName ("boxes" + clickedLetter );
+        for ( i=0; i< boxOvers.length; i++ )   
+        {   
+    		boxOvers[i].style.opacity = clickedToggle;
+        }
+    
+	}
+
+}
+
+////function handleMouseOutAvg (   daysAfterMay1, iterative ) 
+////{ 
+////    var tooltipDiv = document.getElementById ("tooltipDiv");
+////    tooltipDiv.style.opacity = 0;
+////
+////    var boxOvers = document.getElementsByClassName ("boxes" + letters[iterative]);
+////    for ( i=0; i< boxOvers.length; i++ )   
+////    {   
+////		boxOvers[i].style.opacity = 0;
+////    }
+////
+////}
+
+
+
+function handleMouseOver ( whichOne, daysAfterMay1, iterative, xPos, yPos ) 
+{ 
+
+    var tooltipDiv = document.getElementById ("tooltipDiv");
+
+
+       tooltipDiv.innerHTML  = "Year " + whichOne + "<br/>" 
+               + daysAfterMay1 + "<br/>"+ iterative;
+    /////////////////// NEED TO RENAME THE PARAMS -- 
+
+    if ( xPos < 1050 )
+	{    tooltipDiv.style.left = xPos +30;    }
+	else
+    {    tooltipDiv.style.left = xPos -155;    }  // 150 is the width of the div in css
+
+    tooltipDiv.style.top  = yPos - yStep/2; 
+
+    tooltipDiv.style.opacity = 0.9;
+
+//console.log ( "Tooltip should be displayed." );
+
+}
+
+function handleMouseOut (  ) 
+{ 
+//console.log ( "mouseout");
+    var tooltipDiv = document.getElementById ("tooltipDiv");
+    tooltipDiv.style.opacity = 0;
+}
+
+//console.log ( "bottom");
+
+</script>
+
+
+<style type = "text/css">
+
+    svg {border: 0px; background-color: rgb(239,236,234); }
+
+	div#tooltipDiv
+	{	
+        position: absolute;			
+        text-align: left;			
+        width: 150px;					
+        height: 45px;					
+
+        padding-top: 8px;			
+        padding-left: 5px;			
+        font: 12px sans-serif;		
+        background: #fff;	
+
+        border: 10px;
+        border-block-color: #c0c0bb;
+        border-color: red;
+		
+        border-radius: 8px;			
+        pointer-events: none;			
+    }
+
+
+</style>
+
+
+</head>
+
+<body onload = "render()">
+
+<!-- Create a div where the graph will take place -->
+<div id="chartHere"></div>
+<div id="tooltipDiv"></div>
+
+</body>

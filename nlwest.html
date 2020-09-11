@@ -1,0 +1,153 @@
+
+<head>
+
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+
+  <script language ="javascript">
+
+    function render()
+	{
+
+    dataset = [
+          [ "Dodgers", 106,56 ]	
+       ,  [ "Giants", 77,85 ]	
+       ,  [ "Diamondbacks", 85,77 ]	
+       ,  [ "Padres", 70,92 ]	
+       ,  [ "Rockies", 71,71 ]	
+      ];
+
+    dataset = [
+          { "Dodgers":     [106, 56 ] }	
+       ,  { "Giants":       [77, 85 ] }	
+       ,  { "Diamondbacks": [85, 77 ] }	
+       ,  { "Padres":       [70, 92 ] }	
+       ,  { "Rockies":      [71, 71 ] }	
+      ];
+
+    dataset = [
+          { "Dodgers":      {"won":106, "lost": 56 } }	
+       ,  { "Giants":       {"won": 77, "lost": 85 } }	
+       ,  { "Diamondbacks": {"won": 85, "lost": 77 } }	
+       ,  { "Padres":       {"won": 70, "lost": 92 } }	
+       ,  { "Rockies":      {"won": 71, "lost": 71 } }	
+      ];
+
+
+//    dataset = [ 106, 77, 85, 70, 71 ];
+
+   ht = 450
+   wt = 900
+   lm = 160
+   tm = 50
+
+   uniqueTeams = [];
+   // This loop will be executed for the number of unique ship names
+   for ( i=0; i< Object.keys(dataset).length; i++ )
+   {
+	    uniqueTeams.push ( Object.keys(dataset[i])[0] );   // Produces a list of team names; 
+		                                                   // Without the last [0], each team name will be an array with one element
+	}			
+
+console.log ( uniqueTeams ) ;
+
+  var xScale = d3.scaleLinear()
+        .domain ( [  50, 162 ] )
+        .range  ( [ lm, wt ] );
+
+//  var yScale = d3.scaleOrdinal()
+  var yScale = d3.scalePoint()
+        .domain (  uniqueTeams  )
+        .range  ( [ tm, ht-tm ] );  
+
+// var yScale = d3.scaleBand()
+//   .domain ( uniqueTeams )
+//   .range( [ tm, ht-tm ] );
+
+
+
+//console.log ( yScale.padding() );  // 9 
+//console.log ( yScale.step() );     // 75
+//
+//console.log ( yScale ( "Dodgers"  ) );     // 75
+//console.log ( yScale ( "Giants"  ) );     // 75
+//console.log ( yScale ( "Diamondbacks"  ) );     // 75
+//console.log ( yScale ( "Padres"  ) );     // 75
+//console.log ( yScale ( "Rockies"  ) );     // 75
+//console.log ( yScale ( "I don't exist"  ) );     // 75
+
+//var bandScale = d3.scaleBand()
+//  .domain(['Mon', 'Tue', 'Wed', 'Thu', 'Fri'])
+//  .range([0, 200]);
+//
+//bandScale('Mon'); // returns 0
+//bandScale('Tue'); // returns 40
+//bandScale('Fri'); // returns 160
+
+
+  var svg = d3.selectAll ( 'svg' )
+     .attr ( "width", wt )
+     .attr ( "height", ht );
+
+   svg.selectAll ( 'rect' )
+      .data ( dataset )
+	  .enter ()
+	  .append ( 'rect' )
+	  .attr ( "x", lm )
+////// Both of these work, keeping both for the preentation //////
+	  .attr ( "y",     function ( d )   { return  yScale ( Object.keys(d).toString() ); } )   // Each value will be one of the objects
+	                                                                                          // ie: {"Dodgers": {"won":50, "lost": 112}}
+																							  // So, grabbing the key gets the team name 
+
+//	  .attr ( "y",        function ( d,i )   { return  yScale ( uniqueTeams[i]); } )   // Another way to accomplish the same thing (perhaps more intutive
+
+	  .attr ( "width",    function ( d )   { return  xScale ( d[Object.keys(d).toString()]["won"] ); } )   // 
+	  .attr ( "height",   40  )
+	  .attr ( "whichone", function ( d ) { return Object.keys(d).toString(); } ) 
+      .style ( "fill", "black" )
+	  ;
+
+   svg.selectAll ( 'text' )
+      .data ( dataset )
+	  .enter ()
+	  .append ( 'text' )
+      .text ( function ( d )   { return  Object.keys(d).toString(); } )
+//	  .attr ( "y",     function ( d )   { return  yScale ( Object.keys(d).toString() + 20); } )   // Each value will be one of the objects
+//	                                                                                          // ie: {"Dodgers": {"won":50, "lost": 112}}
+//																							  // So, grabbing the key gets the team name 
+	  .attr ( "y",        function ( d,i )   { return  yScale ( uniqueTeams[i]) + 20; } )   // Another way to accomplish the same thing (perhaps mopre intuitvie
+	  .attr ( "x", lm-2 )
+      .attr ("class", "team-label" )	  
+      .style ("text-anchor", "end" )	  
+
+
+//	 var xAxis = d3.axisBottom()
+	 var xAxis = d3.axisTop()
+	    .scale ( xScale  );
+
+     svg.append("g")
+	     .call ( xAxis ) 
+		 .attr ( "transform", "translate (50,50)")
+		 ;
+
+     } // end of render()
+
+
+	 
+  </script>
+
+   <style type="text/css">
+        svg { border: 5px;
+		      border-color: #000;
+             }
+		
+   </style>
+
+</head>
+
+
+<body onload="render()">
+<!--  bgcolor="green" -->
+
+  <svg id="standings"></svg>
+
+</body>

@@ -1,0 +1,156 @@
+
+
+
+
+
+<head>
+<!DOCTYPE html>
+<meta charset="utf-8">
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v5.js"></script>
+
+<!--
+script src="https://d3js.org/d3-color.v2.min.js"></script>
+<script src="https://d3js.org/d3-interpolate.v2.min.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v2.min.js"></script -->
+
+
+
+<script language = "javascript">
+
+    dataset = [
+        [ 'Nov',736 ]
+      , [ 'Dec',621 ]
+      , [ 'Jan',632 ]
+      , [ 'Feb',675 ]
+      , [ 'Mar',672 ]
+      , [ 'Apr',745 ]
+    ]
+
+
+    function render()
+    {
+
+        dims = {"height": 400, "width": 500};
+        margin = {"top": 80, "right": 20 , "bottom": 85 , "left": 50};
+
+        var svg = d3.select("div#chartHere")
+          .append("svg")
+          .attr("width",  dims.width)
+          .attr("height", dims.height)	
+		  ;
+
+        var chartLabel = svg.append ('text')
+		   .text ('6 Month History' )
+		   .attr ( 'x',15)
+		   .attr ( 'y', margin.top*0.5)
+		   .attr ( 'fill', 'black')
+           .attr ('font-size', '22')
+		   ;
+
+
+        var xScale = d3.scalePoint()
+               .domain (  ['Nov','Dec','Jan','Feb','Mar','Apr']  )
+               .range  ( [ 0, dims.width - margin.left - margin.right - 50 ] );  
+
+        var yScale = d3.scaleLinear()
+               .domain (  [ 900 ,300 ]  )
+               .range  ( [ margin.top, dims.height - margin.bottom ] );  
+
+        var colorLinear = d3.scaleLinear()
+               .domain (  [ 500 ,750 ]  )
+               .range  ( [ 0, 1 ] );  
+
+        var horizLines = svg.selectAll ( 'line.horiz' )
+		       .data ( [ 200, 300 ,400 ,500 ,600 ,700 ,800 ,900 ] )
+    		   .enter().append('line')
+               .attr ( 'class', 'horiz' )
+               .attr ( 'x1', margin.left )
+               .attr ( 'x2', dims.width - margin.right )
+               .attr ( 'y1', function (d) { return yScale (d); } )
+               .attr ( 'y2', function (d) { return yScale (d); } )
+               .attr ( 'stroke', 'rgba(127,127,127,0.5)' )
+               .attr ( 'stroke-width', 1)
+                ;			   
+
+         var horizLines = svg.selectAll ( 'text.horizLabel' )
+		       .data ( [ 300 ,500 ,700 ,900 ] )
+    		   .enter().append('text')
+               .attr ( 'class', 'horizLabel' )
+               .text ( function(d) { return d; } )			  
+               .attr ( 'x', margin.left -30 )
+               .attr ( 'y', function (d) { return yScale (d); } )
+               .attr ( 'fill', 'rgba(127,127,127,0.5)' )
+               .attr ( 'transform', 'translate(0,5)' )
+                ;			   
+
+        var xAxis = d3.axisBottom()
+		 .scale ( xScale  );
+
+        svg.append('g')
+           .attr('transform', 'translate(' + (margin.left + 31) + ', ' + ( yScale(200) ) + ')')
+           .call(xAxis)
+//         .select(".domain")
+//           .attr('stroke','none' )
+		 ;
+		 
+         for ( j=0; j<dataset.length; j++ )
+		 {
+             var g = svg.append('g')
+               .attr ( 'transform', 'translate(' + ( xScale ( dataset[j][0] ) + margin.left + 31 ) + ',' + yScale ( dataset[j][1] )+ ')' )
+		 ;
+		 
+		 var score = g.append('text')
+			   .attr ( 'class','score')
+			   .text ( dataset[j][1] )
+			   .attr ( 'x', 0 )
+			   .attr ( 'y', -20 )
+               .style ( 'text-anchor','middle' )
+               .style ( 'font-weight','bold')
+			   ;
+
+         var shadow = g.append('circle')
+			   .attr ( 'class','shadow')
+			   .attr ( 'cx', 2 )
+			   .attr ( 'cy', 2 )
+			   .attr ( 'r', 11)
+    		   .attr ( 'fill',  '#222' )
+			   ;
+
+         var shadow = g.append('circle')
+			   .attr ( 'class','score')
+			   .attr ( 'cx', 0 )
+			   .attr ( 'cy', 0 )
+			   .attr ( 'r', 11)
+    		   .attr ( 'fill',  d3.interpolateRdYlGn ( colorLinear(dataset[j][1]) ) )
+			   ;
+         }
+
+    }  // end of render()
+
+
+</script>
+
+
+<style type = "text/css">
+
+    XXXsvg {border: 0px; background-color: #f5f3f2; }
+    text { font-family: Arial,sans-serif;}
+     .domain { stroke: none; }
+    g.tick text {  fill: rgba(127,127,127,0.5);}
+    g.tick line {  stroke: rgba(127,127,127,0.5);}
+    .XXtagline ( font-family: Arial,sans-serif; font-size:25; }
+    .tagline (  font-size:25; }
+
+</style>
+
+
+</head>
+
+<body onload = "render()">
+
+<h1>Citibank Credit Score History Chart</h1>
+<!-- Create a div where the graph will take place -->
+<div id="chartHere"></div>
+<div class="tagline">&copy;2020, Built by Daniel Stober</div>
+</body>
